@@ -1,6 +1,7 @@
 # Google-Earth-Engine-Projects
-A repository containing open-sourced projects (mostly my contributed) on the use of Google Earth Engine for various environmental applications.
+A repository containing open-sourced code of my projects on the use of Google Earth Engine for various environmental applications. The codes are written in JavaScript (JS) and Python (PY) languages. Any suggestions and contributions are welcome.
 
+## For Projects details, check project page at: 
 
 ## Lists of Projects:
 
