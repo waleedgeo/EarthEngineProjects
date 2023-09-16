@@ -1,9 +1,31 @@
+// *****************************************************************************************
+// 
+// This script calculates the Land Surface Temperature (LST),
+// Urban Heat Island (UHI) and the Urban Thermal Field Variance Index (UTFVI)
+// for a given area of interest (AOI) and startdate and endate using Landsat 8 data.
+// 
+// For reference see the tutorial: https://youtu.be/5W84zme9QmE
+// Check the studies following this approach: https://waleedgeo.com/publication/waleed-leveraging-2022/
+//
+// Author: Mirza Waleed
+// Date: 2023-09-16
+// Email: waleedgeo@outlook.com
+//
+// *****************************************************************************************
+
+
+// INPUTS **********************************************************************************
+
+// AOI
 var aoi = ee.Geometry.Polygon(
     [[[-3.8225909618719167, 40.53241723973516],
       [-3.8225909618719167, 40.233239070237204],
       [-3.4737750439031667, 40.233239070237204],
       [-3.4737750439031667, 40.53241723973516]]]);
+var startDate = '2022-05-01'
+var endDate = '2022-12-31'
 
+// *****************************************************************************************
 
 // Applies scaling factors.
 function applyScaleFactors(image) {
@@ -26,8 +48,9 @@ var mask = qa.bitwiseAnd(cloudShadowBitMask).eq(0)
 return col.updateMask(mask);
 }
 
+// Filter the collection, first by the aoi, and then by date.
 var image = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
-.filterDate('2022-05-01', '2022-12-31')
+.filterDate(startDate, endDate)
 .filterBounds(aoi)
 .map(applyScaleFactors)
 .map(maskL8sr)
@@ -46,7 +69,6 @@ var ndvi  = image.normalizedDifference(['SR_B5', 'SR_B4']).rename('NDVI')
 Map.addLayer(ndvi, {min:-1, max:1, palette: ['blue', 'white', 'green']}, 'ndvi', false)
 
 // ndvi statistics
-
 var ndvi_min = ee.Number(ndvi.reduceRegion({
 reducer: ee.Reducer.min(),
 geometry: aoi,
@@ -90,7 +112,7 @@ palette: [
 Map.addLayer(lst, lst_vis, 'LST AOI')
 Map.centerObject(aoi, 10)
 
-// Urban Heat Island
+// Urban Heat Island ***********************************************************************
 
 //1. Normalized UHI
 
@@ -136,3 +158,4 @@ palette:['313695', '74add1', 'fed976', 'feb24c', 'fd8d3c', 'fc4e2a', 'e31a1c',
 }
 Map.addLayer(utfvi, utfvi_vis, 'UTFVI AOI')
 
+// *****************************************************************************************
