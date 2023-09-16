@@ -1,9 +1,7 @@
 // *****************************************************************************************
 // 
-// This script calculates the Land Surface Temperature (LST),
-// Urban Heat Island (UHI) and the Urban Thermal Field Variance Index (UTFVI)
-// for a given area of interest (AOI) and startdate and endate using Landsat 8 data.
-// 
+// This code visualizes the distribution of Sentinel-1 backscatter values
+// for each land cover class, using box plots.
 // For reference see the tutorial: https://www.youtube.com/watch?v=3Yexo6Q--tk
 // Checkout my webpage: https://waleedgeo.com
 //
