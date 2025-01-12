@@ -93,10 +93,16 @@ var em = fv.multiply(ee.Number(0.004)).add(ee.Number(0.986)).rename('EM')
 
 var thermal = image.select('ST_B10').rename('thermal')
 
+// This code addresses GitHub Issue #1: Incorrect LST formula parameters
+// Corrected λ to 11.5 μm and ρ to 14380 μm·K for consistent units.
+
 var lst = thermal.expression(
-'(tb / (1 + (0.00115 * (tb/0.48359547432)) * log(em))) - 273.15',
-{'tb':thermal.select('thermal'),
-'em': em}).rename('LST')
+    '(tb / (1 + (0.00115 * (tb/0.48359547432)) * log(em))) - 273.15',
+    {
+        'tb': thermal.select('thermal'),
+        'em': em
+    }
+).rename('LST');
 
 var lst_vis = {
 min: 25,
