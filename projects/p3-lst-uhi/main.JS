@@ -97,15 +97,15 @@ var thermal = image.select('ST_B10').rename('thermal')
 // Corrected λ to 11.5 μm and ρ to 14380 μm·K for consistent units.
 
 var lst = thermal.expression(
-    '(tb / (1 + (0.00115 * (tb/0.48359547432)) * log(em))) - 273.15',
+    '(tb / (1 + ((11.5 * (tb / 14380)) * log(em)))) - 273.15',
     {
-        'tb': thermal.select('thermal'),
-        'em': em
+        'tb': thermal.select('thermal'), // Brightness temperature in Kelvin
+        'em': em                        // Emissivity
     }
 ).rename('LST');
 
 var lst_vis = {
-min: 25,
+min: 7,
 max: 50,
 palette: [
 '040274', '040281', '0502a3', '0502b8', '0502ce', '0502e6',
